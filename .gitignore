@@ -62,3 +62,10 @@ typings/
 
 # IntelliJ
 .idea/
+
+# Realm
+# Binaries
+*.realm
+*.realm.lock
+*.management/
+vendor/realm-*
