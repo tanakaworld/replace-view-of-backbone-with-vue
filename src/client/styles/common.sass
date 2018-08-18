@@ -1,0 +1,32 @@
+@import "color"
+
+html, body
+  margin: 0
+  padding: 0
+
+#app
+  padding: 24px
+
+.Breadcrumb
+  margin: 12px 0
+  padding: 0
+  list-style: none
+  display: flex
+  .Breadcrumb__Item
+    &:not(:first-child)
+      margin-left: 8px
+      &:before
+        content: '> '
+
+.Table
+  th, td
+    padding: 8px
+    text-align: left
+
+.Link
+  cursor: pointer
+  text-decoration: underline
+  color: $color-blue
+
+  &:link, &:visited, &:active
+    color: $color-blue

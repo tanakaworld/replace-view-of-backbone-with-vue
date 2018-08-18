@@ -8,7 +8,7 @@ export default Backbone.View.extend({
 
     events: {
         'submit .NodeEditor__Form': 'submit',
-        'click .NodeEditor__DeleteBtn': 'deleteNode',
+        'click .NodeEditor__DeleteBtn': 'deleteNode'
     },
 
     initialize({model, deleteNodeCallback}) {
@@ -28,10 +28,7 @@ export default Backbone.View.extend({
         e.preventDefault();
 
         const $form = $(e.currentTarget);
-        const {title, color} = $form.serializeArray().reduce((r, {name, value}) => {
-            r[name] = value;
-            return r;
-        }, {});
+        const {title, color} = $form.serializeAsObject();
         this.model.updateData({title, color});
     },
 

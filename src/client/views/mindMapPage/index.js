@@ -4,6 +4,9 @@ import joint from 'jointjs';
 
 import template from './template.hbs';
 import NodeEditor from './nodeEditor';
+
+import MindMapNodesCollection from '../../collections/mindMapNodes';
+import MindMapLinksCollection from '../../collections/mindMapLinks';
 import MindMapGraph from '../../models/mindMapGraph';
 import MindMapLink from '../../models/mindMapLink';
 import MindMapNode from '../../models/mindMapNode';
@@ -11,27 +14,62 @@ import MindMapNode from '../../models/mindMapNode';
 export default Backbone.View.extend({
     template,
 
+    id: 'MindMapPage',
+
     events: {
         'drop .MindMap__Paper': 'drop',
         "dragover .MindMap__Paper": "allowDrop"
     },
 
+    initialize({mindMapModel}) {
+        this.mindMapModel = mindMapModel;
+        this.mindMapId = this.mindMapModel.get('id');
+    },
+
     render() {
-        this.$el.html(this.template({title: 'MindMap'}));
+        this.$el.html(this.template({
+            id: this.mindMapModel.get('id'),
+            title: this.mindMapModel.get('title')
+        }));
         setTimeout(() => {
             this.renderGraph();
         }, 100);
     },
 
     renderGraph() {
+        const {mindMapId} = this;
+
         this.graph = new MindMapGraph();
+        this.graph.on('add', (cell) => {
+            if (cell instanceof MindMapLink) {
+                cell.on('change:target change:source', () => {
+                        const s = cell.get('source');
+                        const t = cell.get('target');
+                        if (s.id && t.id) {
+                            if (s.port) cell.set('from', s.id);
+                            if (t.port) cell.set('to', t.id);
+                            cell.save(null, {
+                                error: () => alert('Failed to save link ...')
+                            });
+                        }
+                    }
+                );
+            }
+        }).on('remove', (cell) => {
+            if (cell instanceof MindMapLink) {
+                cell.destroy();
+            }
+        });
+
         this.paper = new joint.dia.Paper({
             el: $('.MindMap__Paper'),
             width: 800,
             height: 900,
             gridSize: 1,
             model: this.graph,
-            defaultLink: new MindMapLink,
+            defaultLink: () => {
+                return new MindMapLink({mindMapId});
+            },
             linkPinning: false,
             snapLinks: {radius: 75},
             markAvailable: true,
@@ -49,23 +87,49 @@ export default Backbone.View.extend({
 
             if (model instanceof MindMapNode) {
                 this.renderNodeEditor(model);
+                // save current position
+                model.save(null, {
+                    error: () => alert('Failed to save position changed ...')
+                });
             }
         }, this).on('blank:pointerup', () => {
             this.destroyNodeEditor();
         }, this);
 
         // initial data
-        const e1 = this.graph.makeNode({x: 100, y: 100});
-        const e2 = this.graph.makeNode({x: 300, y: 100});
-        this.graph.makeLink({sourceId: e1.get('id'), targetId: e2.get('id')});
+        // MindMapNodes
+        const mindMapNodesCollection = new MindMapNodesCollection({mindMapId});
+        mindMapNodesCollection.fetch({
+            success: (collection) => {
+                collection.models.forEach((model) => {
+                    this.graph.makeNode(model.toJSON());
+                });
+            },
+            error: () => alert('Failed to load MindMapNodes ...')
+        });
+        // MindMapLinks
+        const mindMapLinksCollection = new MindMapLinksCollection({mindMapId});
+        mindMapLinksCollection.fetch({
+            success: (collection) => {
+                collection.models.forEach((model) => {
+                    const {id, from: sourceId, to: targetId} = model.toJSON();
+                    this.graph.makeLink({
+                        mindMapId: this.mindMapId,
+                        id, sourceId, targetId
+                    });
+                });
+            },
+            error: () => alert('Failed to load MindMapNodes ...')
+        });
     },
 
     drop(e) {
         e.preventDefault();
         const {x, y} = this.getSVGLocation(e);
+        const {mindMapId} = this;
 
         // render new node
-        const node = this.graph.makeNode({x, y});
+        const node = this.graph.makeNode({mindMapId, x, y});
         this.renderNodeEditor(node);
 
         // async to save
@@ -91,17 +155,22 @@ export default Backbone.View.extend({
 
     renderNodeEditor(model) {
         this.destroyNodeEditor();
+        const self = this;
 
         model.focus(true);
         this.nodeEditor = new NodeEditor({
             el: $('.MindMap__NodeEditor'),
             model,
             deleteNodeCallback() {
-                model.destroy().then(() => {
-                    this.destroyNodeEditor();
-                }).catch((e) => {
-                    console.error(e);
-                    alert('Error');
+                model.destroy({
+                    success: () => {
+                        console.log('destroy');
+                        self.destroyNodeEditor();
+                    },
+                    error: () => {
+                        console.error(e);
+                        alert('Error');
+                    }
                 });
             }
         });
