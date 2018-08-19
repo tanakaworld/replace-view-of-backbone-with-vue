@@ -164,10 +164,9 @@ export default Backbone.View.extend({
             deleteNodeCallback() {
                 model.destroy({
                     success: () => {
-                        console.log('destroy');
                         self.destroyNodeEditor();
                     },
-                    error: () => {
+                    error: (e) => {
                         console.error(e);
                         alert('Error');
                     }
@@ -181,6 +180,7 @@ export default Backbone.View.extend({
     destroyNodeEditor() {
         if (this.nodeEditor) {
             this.nodeEditor.close();
+            this.nodeEditor.$el.empty();
         }
         if (this.modelInNodeEditor) {
             this.modelInNodeEditor.focus(false);

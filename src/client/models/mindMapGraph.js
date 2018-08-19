@@ -4,11 +4,12 @@ import MindMapNode from './mindMapNode';
 import MindMapLink from './mindMapLink';
 
 export default joint.dia.Graph.extend({
-    makeNode({mindMapId, id, title, x, y}) {
+    makeNode({mindMapId, id, title, color, x, y}) {
         const element = new MindMapNode({
             mindMapId,
             id,
             title,
+            color,
             position: {x, y},
             inPorts: ['in'],
             outPorts: ['out']
