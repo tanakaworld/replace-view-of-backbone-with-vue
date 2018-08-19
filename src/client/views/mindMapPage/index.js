@@ -149,16 +149,15 @@ export default Backbone.View.extend({
 
     renderNodeEditor(model) {
         this.destroyNodeEditor();
-        const self = this;
 
         model.focus(true);
         this.nodeEditor = new NodeEditor({
-            el: $('.MindMap__NodeEditor'),
+            el: '.MindMap__NodeEditor',
             model,
-            deleteNodeCallback() {
+            deleteNodeCallback: () => {
                 model.destroy({
                     success: () => {
-                        self.destroyNodeEditor();
+                        this.destroyNodeEditor();
                     },
                     error: (e) => {
                         console.error(e);
