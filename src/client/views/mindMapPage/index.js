@@ -97,29 +97,23 @@ export default Backbone.View.extend({
         }, this);
 
         // initial data
-        // MindMapNodes
         const mindMapNodesCollection = new MindMapNodesCollection({mindMapId});
-        mindMapNodesCollection.fetch({
-            success: (collection) => {
-                collection.models.forEach((model) => {
-                    this.graph.makeNode(model.toJSON());
-                });
-            },
-            error: () => alert('Failed to load MindMapNodes ...')
-        });
-        // MindMapLinks
         const mindMapLinksCollection = new MindMapLinksCollection({mindMapId});
-        mindMapLinksCollection.fetch({
-            success: (collection) => {
-                collection.models.forEach((model) => {
-                    const {id, from: sourceId, to: targetId} = model.toJSON();
-                    this.graph.makeLink({
-                        mindMapId: this.mindMapId,
-                        id, sourceId, targetId
-                    });
+        $.when(mindMapNodesCollection.fetch(), mindMapLinksCollection.fetch()).then(() => {
+            // MindMapNodes
+            mindMapNodesCollection.models.forEach((model) => {
+                this.graph.makeNode(model.toJSON());
+            });
+            // MindMapLinks
+            mindMapLinksCollection.models.forEach((model) => {
+                const {id, from: sourceId, to: targetId} = model.toJSON();
+                this.graph.makeLink({
+                    mindMapId: this.mindMapId,
+                    id, sourceId, targetId
                 });
-            },
-            error: () => alert('Failed to load MindMapNodes ...')
+            });
+        }).catch(() => {
+            alert('Failed to load initial data ...');
         });
     },
 
