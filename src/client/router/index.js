@@ -4,12 +4,14 @@ import $ from "jquery";
 
 import MindMapsPage from "../views/mindMapsPage";
 import MindMapPage from "../views/mindMapPage";
+import MindMapWithVuePage from "../views/mindMapPageWithVue";
 import MindMapsCollection from "../collections/mindMaps";
 
 export default Backbone.Router.extend({
     routes: {
         '(/)': 'mindMaps',
-        'mindMaps/:id(/)': 'mindMap'
+        'mindMaps/:id(/)': 'mindMap',
+        'mindMaps/vue/:id(/)': 'mindMapWithVue'
     },
 
     initialize: function () {
@@ -40,6 +42,17 @@ export default Backbone.Router.extend({
         }
 
         const page = new MindMapPage({mindMapModel});
+        this.pageRenderer.render(page);
+    },
+
+    mindMapWithVue: function (id) {
+        const mindMapModel = this.mindMapsCollection.get(id);
+        if (!mindMapModel) {
+            alert('Not Found Mind Map');
+            return '';
+        }
+
+        const page = new MindMapWithVuePage({mindMapModel});
         this.pageRenderer.render(page);
     }
 });

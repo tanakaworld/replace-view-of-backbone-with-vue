@@ -7,6 +7,7 @@ export default Backbone.View.extend({
 
     events: {
         'click .MindMapTable__OpenLink': 'openMindMap',
+        'click .MindMapTable__OpenLinkVue': 'openMindMapWithVue',
         'click .MindMapTable__DeleteBtn': 'deleteMindMap'
     },
 
@@ -26,6 +27,12 @@ export default Backbone.View.extend({
         e.preventDefault();
 
         Backbone.history.navigate(`/mindMaps/${this.model.get('id')}`, true);
+    },
+
+    openMindMapWithVue(e) {
+        e.preventDefault();
+
+        Backbone.history.navigate(`/mindMaps/vue/${this.model.get('id')}`, true);
     },
 
     deleteMindMap(e) {

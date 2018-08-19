@@ -32,6 +32,7 @@ export default Backbone.View.extend({
             title: this.mindMapModel.get('title')
         }));
         setTimeout(() => {
+            this.initializeNodeEditor();
             this.renderGraph();
         }, 100);
     },
@@ -147,14 +148,10 @@ export default Backbone.View.extend({
         return svgPt.matrixTransform(viewport.getScreenCTM().inverse());
     },
 
-    renderNodeEditor(model) {
-        this.destroyNodeEditor();
-
-        model.focus(true);
+    initializeNodeEditor() {
         this.nodeEditor = new NodeEditor({
             el: '.MindMap__NodeEditor',
-            model,
-            deleteNodeCallback: () => {
+            deleteNodeCallback: (model) => {
                 model.destroy({
                     success: () => {
                         this.destroyNodeEditor();
@@ -166,15 +163,20 @@ export default Backbone.View.extend({
                 });
             }
         });
-        this.nodeEditor.render();
+    },
+
+    renderNodeEditor(model) {
+        this.destroyNodeEditor();
+
+        model.focus(true);
+
+        this.nodeEditor.render(model);
         this.modelInNodeEditor = model;
     },
 
     destroyNodeEditor() {
         if (this.nodeEditor) {
             this.nodeEditor.close();
-            this.nodeEditor.$el.empty();
-            this.nodeEditor = null;
         }
         if (this.modelInNodeEditor) {
             this.modelInNodeEditor.focus(false);

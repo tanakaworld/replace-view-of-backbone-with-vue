@@ -1,6 +1,7 @@
 const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const CleanWebpackPlugin = require("clean-webpack-plugin");
+const {VueLoaderPlugin} = require('vue-loader');
 
 const outputDirectory = "dist";
 
@@ -34,6 +35,10 @@ module.exports = {
             {
                 test: /\.hbs$/,
                 loader: 'handlebars-loader'
+            },
+            {
+                test: /\.vue$/,
+                loader: "vue-loader"
             }
         ]
     },
@@ -49,6 +54,12 @@ module.exports = {
         new HtmlWebpackPlugin({
             template: "./public/index.html",
             favicon: "./public/favicon.ico"
-        })
-    ]
+        }),
+        new VueLoaderPlugin()
+    ],
+    resolve: {
+        alias: {
+            'vue$': 'vue/dist/vue.esm.js'
+        }
+    }
 };
