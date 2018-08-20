@@ -63,6 +63,7 @@
         },
         watch: {
             tmpColor({hex}) {
+                this.tmpColor = hex;
                 this.SAVE_MODEL({
                     title: this.tmpTitle,
                     color: hex
