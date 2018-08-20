@@ -149,20 +149,7 @@ export default Backbone.View.extend({
     },
 
     initializeNodeEditor() {
-        this.nodeEditor = new NodeEditor({
-            el: '.MindMap__NodeEditor',
-            deleteNodeCallback: (model) => {
-                model.destroy({
-                    success: () => {
-                        this.destroyNodeEditor();
-                    },
-                    error: (e) => {
-                        console.error(e);
-                        alert('Error');
-                    }
-                });
-            }
-        });
+        this.nodeEditor = new NodeEditor({el: '.MindMap__NodeEditor'});
     },
 
     renderNodeEditor(model) {
