@@ -1,23 +1,20 @@
 <template>
     <div class="NodeEditor">
-        <form class="NodeEditor__Form Form">
-            <div class="FormGroup">
-                <label class="FormLabel">ID</label>
+        <GlobalForm>
+            <GlobalFormGroup label="ID">
                 <small>{{id}}</small>
-            </div>
+            </GlobalFormGroup>
 
-            <div class="FormGroup">
-                <label class="FormLabel">Title</label>
+            <GlobalFormGroup label="Title">
                 <input name="title" class="NodeEditor__Title" type="text" v-model="tmpTitle" @blur="onBlurTitle"/>
-            </div>
+            </GlobalFormGroup>
 
-            <div class="FormGroup">
-                <label class="FormLabel">Color</label>
+            <GlobalFormGroup label="Color">
                 <color-picker class="NodeEditor__ColorPicker" v-model="tmpColor"/>
-            </div>
-        </form>
+            </GlobalFormGroup>
+        </GlobalForm>
 
-        <button class="NodeEditor__DeleteBtn" @click="onClickDelete">Delete</button>
+        <GlobalButton @click="onClickDelete" type="danger">Delete</GlobalButton>
     </div>
 </template>
 
@@ -74,7 +71,3 @@
         }
     };
 </script>
-
-<style scoped>
-
-</style>

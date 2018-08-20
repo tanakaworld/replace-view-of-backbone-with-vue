@@ -1,7 +1,8 @@
 import Vue from 'vue';
 import App from './App.vue';
-import store, {GETTERS, MUTATIONS} from './store';
 import {mapGetters} from 'vuex';
+import '../../global-components';
+import store, {GETTERS, MUTATIONS} from './store';
 
 export default class NodeEditor {
     constructor({el}) {

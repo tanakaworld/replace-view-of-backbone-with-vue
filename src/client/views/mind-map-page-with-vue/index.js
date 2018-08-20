@@ -3,7 +3,7 @@ import $ from 'jquery';
 import joint from 'jointjs';
 
 import template from './template.hbs';
-import NodeEditor from './node-editor';
+import NodeEditor from './components/node-editor';
 
 import MindMapNodesCollection from '../../collections/mind-map-nodes';
 import MindMapLinksCollection from '../../collections/mind-map-links';
