@@ -13,7 +13,7 @@
 
             <div class="FormGroup">
                 <label class="FormLabel">Color</label>
-                <input name="color" class="NodeEditor__ColorPicker" type="text" v-model="tmpColor" @blur="onBlurColor"/>
+                <color-picker class="NodeEditor__ColorPicker" v-model="tmpColor"/>
             </div>
         </form>
 
@@ -24,9 +24,13 @@
 <script>
     import {mapActions} from 'vuex';
     import {ACTIONS} from './store';
+    import {Sketch as ColorPicker} from 'vue-color';
 
     export default {
         name: "NodeEditor",
+        components: {
+            ColorPicker
+        },
         props: {
             id: {
                 type: String,
@@ -56,14 +60,16 @@
                     color: this.tmpColor
                 });
             },
-            onBlurColor() {
-                this.SAVE_MODEL({
-                    title: this.tmpTitle,
-                    color: this.tmpColor
-                });
-            },
             onClickDelete() {
                 this.DELETE_MODEL();
+            }
+        },
+        watch: {
+            tmpColor({hex}) {
+                this.SAVE_MODEL({
+                    title: this.tmpTitle,
+                    color: hex
+                });
             }
         }
     };
