@@ -40,7 +40,7 @@ export default new Vuex.Store({
                     commit(MUTATIONS.clearModel);
                 },
                 error: () => {
-                    alert('Failed to save ...');
+                    alert('Failed to destroy ...');
                 }
             });
         }

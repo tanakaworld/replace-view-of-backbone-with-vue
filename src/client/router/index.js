@@ -1,11 +1,11 @@
 import Backbone from "backbone";
-import PageRenderer from "./pageRenderer";
+import PageRenderer from "./page-renderer";
 import $ from "jquery";
 
-import MindMapsPage from "../views/mindMapsPage";
-import MindMapPage from "../views/mindMapPage";
-import MindMapWithVuePage from "../views/mindMapPageWithVue";
-import MindMapsCollection from "../collections/mindMaps";
+import MindMapsPage from "../views/mind-maps-page";
+import MindMapPage from "../views/mind-map-page";
+import MindMapWithVuePage from "../views/mind-map-page-with-vue";
+import MindMapsCollection from "../collections/mind-maps";
 
 export default Backbone.Router.extend({
     routes: {

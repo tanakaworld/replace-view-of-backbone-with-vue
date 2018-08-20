@@ -1,17 +1,17 @@
 import Backbone from "backbone";
-import MindMapLink from '../models/mindMapLink';
+import MindMapNode from '../models/mind-map-node';
 
 export default Backbone.Collection.extend({
-    model: MindMapLink,
+    model: MindMapNode,
 
     url() {
-        return `/api/mindMaps/${this.mindMapId}/mindMapLinks`;
+        return `/api/mindMaps/${this.mindMapId}/mindMapNodes`;
     },
 
     processData: true,
 
     parse(data) {
-        return data.mindMapLinks;
+        return data.mindMapNodes;
     },
 
     initialize({mindMapId}) {

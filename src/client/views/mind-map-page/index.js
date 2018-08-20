@@ -3,13 +3,13 @@ import $ from 'jquery';
 import joint from 'jointjs';
 
 import template from './template.hbs';
-import NodeEditor from './nodeEditor';
+import NodeEditor from './node-editor';
 
-import MindMapNodesCollection from '../../collections/mindMapNodes';
-import MindMapLinksCollection from '../../collections/mindMapLinks';
-import MindMapGraph from '../../models/mindMapGraph';
-import MindMapLink from '../../models/mindMapLink';
-import MindMapNode from '../../models/mindMapNode';
+import MindMapNodesCollection from '../../collections/mind-map-nodes';
+import MindMapLinksCollection from '../../collections/mind-map-links';
+import MindMapGraph from '../../models/mind-map-graph';
+import MindMapLink from '../../models/mind-map-link';
+import MindMapNode from '../../models/mind-map-node';
 
 export default Backbone.View.extend({
     template,

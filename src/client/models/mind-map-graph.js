@@ -1,7 +1,7 @@
 import joint from 'jointjs';
 
-import MindMapNode from './mindMapNode';
-import MindMapLink from './mindMapLink';
+import MindMapNode from './mind-map-node';
+import MindMapLink from './mind-map-link';
 
 export default joint.dia.Graph.extend({
     makeNode({mindMapId, id, title, color, x, y}) {

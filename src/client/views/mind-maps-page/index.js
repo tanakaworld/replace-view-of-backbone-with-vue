@@ -1,7 +1,7 @@
 import Backbone from 'backbone';
 
 import template from './template.hbs';
-import MindMapTableRowView from './mindMapTableRow';
+import MindMapTableRowView from './mind-map-table-row';
 import $ from "jquery";
 
 export default Backbone.View.extend({

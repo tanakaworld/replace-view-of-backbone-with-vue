@@ -33,7 +33,7 @@ export default class NodeEditor {
                     this.show = false;
                 }
             },
-            template: `<div v-if="show">` +
+            template: `<div v-if="show && getModel()">` +
                 `<App
                     :id="getModel().get('id')"
                     :title="getModel().get('title')"
