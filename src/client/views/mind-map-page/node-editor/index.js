@@ -7,7 +7,7 @@ export default Backbone.View.extend({
     template,
 
     events: {
-        // 'submit .NodeEditor__Form': 'submit',
+        'submit .NodeEditor__Form': 'submit',
         'click .NodeEditor__DeleteBtn': 'deleteNode',
         'blur .NodeEditor__Title': 'save'
     },
